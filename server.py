@@ -7,7 +7,7 @@ from flask import Flask, render_template, request, jsonify, url_for, redirect
 # Import the sentiment_analyzer function from the package created: TODO
 from SentimentAnalysis.sentiment_analysis import sentiment_analyzer
 #Initiate the flask app : TODO
-app = Flask(__name___)
+app = Flask(__name__)
 @app.route("/sentimentAnalyzer")
 def sent_analyzer():
     ''' This code receives the text from the HTML interface and 
@@ -16,6 +16,14 @@ def sent_analyzer():
         score for the provided text.
     '''
     # TODO
+    # Retrieve the text to analyze using bthe request library
+    text_to_analyze = request.args.get('textToAnalyze')
+
+    # Pass the text to be analyzed to the sentiment_analyzer function
+    response = sentiment_analyzer(text_to_analyze)
+    label = response["label"].split('_')[1]
+    score = response["score"]
+    return f"The given text has been identified as {label} with a score of {score}"
 
 @app.route("/")
 def render_index_page():
@@ -23,7 +31,8 @@ def render_index_page():
         page over the Flask channel
     '''
     #TODO
-
+    return render_template('index.html')
 if __name__ == "__main__":
     ''' This functions executes the flask app and deploys it on localhost:5000
     '''#TODO
+    app.run(host="0.0.0.0", port=5000)
