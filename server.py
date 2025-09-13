@@ -21,12 +21,15 @@ def sent_analyzer():
 
     # Pass the text to be analyzed to the sentiment_analyzer function
     response = sentiment_analyzer(text_to_analyze)
-    label = response["label"]
-    score = response["score"]
-    if label:
-        return f"The given text has been identified as {label} with a score of {score}".format(label.split('_')[1])
-    else:
+    #Check if the label is None indicating an error or invalid input if it is
+    if response["label"] == None:
         return "Invalid input ! Try again"
+    else:
+        label = response["label"]
+        # Format the label to strip it leaving only either a positive, negative or neutral sentiment
+        raw_label = label.replace("SENT_", "")
+        score = response["score"]
+        return f"The given text has been identified as {raw_label} with a score of {score}"
 
 
 @app.route("/")
