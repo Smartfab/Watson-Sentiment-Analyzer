@@ -23,7 +23,11 @@ def sent_analyzer():
     response = sentiment_analyzer(text_to_analyze)
     label = response["label"].split('_')[1]
     score = response["score"]
-    return f"The given text has been identified as {label} with a score of {score}"
+    if label:
+        return f"The given text has been identified as {label} with a score of {score}"
+    elif label not in response:
+        return "Invalid input ! Try again"
+
 
 @app.route("/")
 def render_index_page():
